@@ -85,7 +85,7 @@ LLMを使用しないため `dsh-llm` peerはありません。Cordisもruntime 
 | `resources/en-0.2.0-rc.2.json` | 英語基準、DSH版、各namespaceの提供パッケージ |
 | `resources/accepted-fallbacks.json` | 意図的に保持する4つの書式用キー |
 | `resources/coverage.json` | 監査結果：不足4、古いキー0、無効な翻訳0 |
-| `README.md`・`README.ja.md` | 導入・開発・トラブルシューティング・更新への追従 |
+| `README.md` | 日本語による導入・開発・トラブルシューティング・更新への追従 |
 | `REPORT.ja.md` | この報告書 |
 | `LICENSE`・`THIRD_PARTY_NOTICES.md` | 本実装と使用データのMITライセンス |
 | `.gitignore` | 開発依存と一時的なテスト結果を除外 |
@@ -144,7 +144,7 @@ pnpm test
 pnpm pack --pack-destination ..
 ```
 
-実UIテストの起動・URL指定方法はREADME.ja.mdを参照してください。UIの活性化・解除まで行う検証には、分離したDSH_HOMEで `pnpm test:e2e --cleanup` を使用します。
+実UIテストの起動・URL指定方法はREADME.mdを参照してください。UIの活性化・解除まで行う検証には、分離したDSH_HOMEで `pnpm test:e2e --cleanup` を使用します。
 
 ## 8. 既知の制限と更新方針
 

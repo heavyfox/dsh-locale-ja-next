@@ -16,7 +16,7 @@
     "./locale/*.json": "./locale/*.json",
     "./package.json": "./package.json"
   },
-  "files": ["lib", "locale", "cordis.patch.yml", "README.md", "README.ja.md", "REPORT.ja.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
+  "files": ["lib", "locale", "cordis.patch.yml", "README.md", "REPORT.ja.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
   "engines": { "node": "^22.19.0 || >=24.0.0", "dsh": "0.2.0-rc.2" },
   "publishConfig": { "access": "public" },
   "keywords": ["dsh-plugin", "deepseek-harness", "japanese", "locale"],
