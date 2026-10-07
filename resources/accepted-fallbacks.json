@@ -1,0 +1,6 @@
+[
+  "chat.message.stepProcess.sharedPrefix",
+  "pluginManager.sentenceSeparator",
+  "schedule.catalog.cron.part.join",
+  "schedule.manager.cron.part.join"
+]

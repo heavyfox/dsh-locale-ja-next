@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "version": "0.2.0-rc.2",
+  "checks": [
+    "language catalog",
+    "Japanese settings",
+    "Japanese font override",
+    "English restores original font",
+    "reload persistence",
+    "fresh browser Host persistence",
+    "plugin management UI",
+    "live disable removes Japanese and falls back to English",
+    "live enable restores Host preference"
+  ],
+  "browserErrors": []
+}

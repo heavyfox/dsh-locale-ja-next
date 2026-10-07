@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0-rc.2",
+  "total": 2615,
+  "translated": 2611,
+  "missing": [
+    "chat.message.stepProcess.sharedPrefix",
+    "pluginManager.sentenceSeparator",
+    "schedule.catalog.cron.part.join",
+    "schedule.manager.cron.part.join"
+  ],
+  "stale": [],
+  "invalid": []
+}

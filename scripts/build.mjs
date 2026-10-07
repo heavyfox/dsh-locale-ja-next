@@ -1,0 +1,14 @@
+import { build } from 'esbuild';
+import { mkdirSync, writeFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const result = spawnSync(process.execPath, [require.resolve('typescript/bin/tsc'), '-p', 'tsconfig.json'], { stdio: 'inherit' });
+if (result.status !== 0) process.exit(result.status ?? 1);
+await build({ entryPoints: ['src/index.ts'], bundle: true, platform: 'node', format: 'esm', outfile: 'lib/index.js' });
+const bundle = await build({ entryPoints: ['src/client.ts'], bundle: true, platform: 'browser', format: 'cjs', write: false, target: 'es2022' });
+const code = bundle.outputFiles[0].text;
+if (/\brequire\s*\(/.test(code)) throw new Error('Browser bundle must have zero runtime imports');
+mkdirSync('lib', { recursive: true });
+writeFileSync('lib/client.js', `window.__ModuleLoader__.load({id:"dsh-locale-ja-next",factory:()=>{const module={exports:{}};const exports=module.exports;\n${code}\nreturn module.exports;}});\n`);
+console.log('Built host ESM, self-contained ModuleLoader client, and declarations');

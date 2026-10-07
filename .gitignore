@@ -1,0 +1,10 @@
+node_modules/
+*.tgz
+test-results/
+.env
+.env.*
+.npmrc
+*.log
+.DS_Store
+Thumbs.db
+evidence/failure*

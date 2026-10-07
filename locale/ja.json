@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "dsh-locale-ja-next",
+    "description": "DeepSeek Harness 0.2.0-rc.2のWeb UIに日本語を追加します。翻訳データは同梱されており、通信は行いません。"
+  }
+}

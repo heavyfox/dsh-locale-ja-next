@@ -1,0 +1,40 @@
+新規セッション
+Ctrl
++
+Alt
++
+N
+プラグイン
+ワークスペース
+既定のワークスペース
+新規セッション
+設定
+プラグイン
+プラグインのインストール・有効化・設定
+プラグインを追加
+公式
+8
+Agent Teams
+実験的
+Enable team collaboration, team tools, the member roster, and the shared task board.
+Auto Authorization Review
+実験的
+Add an Auto review permission mode that uses the model to assess authorization before each tool call.
+Automation tasks
+実験的
+Run tasks in your sessions at a set time or on a repeating schedule.
+Voice input
+実験的
+Transcribe recordings locally with SenseVoice; first use requires installing dependencies
+シェル
+各コマンドの実行時間と出力量の上限を設定します。
+エージェントループ
+エージェントによるツール呼び出しの実行方法を設定します。
+サブエージェント
+サブエージェントの再帰深度、数、モデルを設定します。
+Web検索
+DeepSeek検索プロバイダーを設定します。
+インストール済み
+1
+dsh-locale-ja-next
+DeepSeek Harness 0.2.0-rc.2のWeb UIに日本語を追加します。翻訳データは同梱されており、通信は行いません。
