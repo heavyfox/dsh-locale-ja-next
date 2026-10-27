@@ -6,12 +6,18 @@ import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
 import { Context } from '@deepseek-ai/cordis';
 import { build } from 'esbuild';
+import { japaneseDictionaries } from '../src/translations/index.ts';
 const require = createRequire(import.meta.url);
 const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
-const baseline = JSON.parse(readFileSync(new URL('../resources/en-0.2.0-rc.2.json', import.meta.url))).dictionaries;
+const version = process.env.DSH_TEST_VERSION ?? '0.2.1-rc.3';
+const localePackage = process.env.DSH_TEST_LOCALE_PACKAGE ?? '@deepseek-ai/dsh-client-locale';
+assert.equal(JSON.parse(readFileSync(require.resolve(`${localePackage}/package.json`))).version, version);
+const baseline = JSON.parse(readFileSync(new URL(`../resources/en-${version}.json`, import.meta.url))).dictionaries;
+const currentBaseline = JSON.parse(readFileSync(new URL('../resources/en-0.2.1-rc.3.json', import.meta.url))).dictionaries;
+const legacyBaseline = JSON.parse(readFileSync(new URL('../resources/en-0.2.0-rc.2.json', import.meta.url))).dictionaries;
 function loadBundle(filename, dependencies = {}) {
   let record;
-  const sandbox = { window: { __ModuleLoader__: { load(value) { record = value; } } }, navigator: { languages: ['en-US'], language: 'en-US' }, console, queueMicrotask };
+  const sandbox = { window: { __ModuleLoader__: { load(value) { record = value; } }, ...(version.startsWith('0.2.0') ? {} : { __DSH_BOOT__: { release: { version } } }) }, navigator: { languages: ['en-US'], language: 'en-US' }, console, queueMicrotask };
   vm.runInNewContext(readFileSync(filename, 'utf8'), sandbox, { filename: String(filename) });
   assert.ok(record?.factory, 'DSH ModuleLoader factory registered');
   return { id: record.id, exports: record.factory(id => {
@@ -21,7 +27,7 @@ function loadBundle(filename, dependencies = {}) {
 }
 function runtime() {
   // Load the real distributed DSH browser runtime; React UI dependencies are not executed.
-  const exports = loadBundle(require.resolve('@deepseek-ai/dsh-client-locale/client'), {
+  const exports = loadBundle(require.resolve(`${localePackage}/client`), {
     'react/jsx-runtime': {}, react: {}, '@deepseek-ai/dsh-client-ui-primitives': {}, '@deepseek-ai/dsh-client-store': {}
   }).exports;
   const locale = new exports.LocaleRuntime(new Context());
@@ -37,7 +43,7 @@ test('host entry loads and manifest targets the tested DSH release', async () =>
   const host = await import('../lib/index.js');
   assert.equal(host.apply(), undefined);
   assert.equal(plugin.id, pkg.name);
-  assert.equal(pkg.peerDependencies['@deepseek-ai/dsh-client-locale'], '0.2.0-rc.2');
+  assert.equal(pkg.engines.dsh, '>=0.2.0-rc.2 <0.3.0-0');
   assert.equal(pkg.dsh.client.immediately, true);
   assert.equal(pkg.dsh.client.platform, 'web');
   assert.deepEqual([...plugin.exports.inject], ['locale']);
@@ -81,14 +87,26 @@ test('failed activation rolls back partial registrations and preserves other own
   const another = locale.register('transient', 'ja', { key: '再登録できる' }); another(); existing();
 });
 test('every shipped translation uses a real key and preserves all placeholders', () => {
-  const ja = JSON.parse(readFileSync(new URL('../src/translations/ja-JP.json', import.meta.url)));
+  const ja = japaneseDictionaries(version);
   const names = text => [...text.matchAll(/\{(\w+)\}/g)].map(m => m[1]).sort();
   const locale = runtime(); const dispose = registerJapanese(locale, ja); locale.setLocale('ja');
   for (const [ns, dictionary] of Object.entries(ja)) for (const [key, value] of Object.entries(dictionary)) {
-    assert.equal(typeof baseline[ns]?.[key], 'string', `${ns}.${key} exists`);
+    const english = baseline[ns]?.[key] ?? currentBaseline[ns]?.[key] ?? legacyBaseline[ns]?.[key];
+    assert.equal(typeof english, 'string', `${ns}.${key} exists in a supported release`);
     assert.ok(value.trim(), `${ns}.${key} is nonempty`);
-    assert.deepEqual(names(value), names(baseline[ns][key]), `${ns}.${key} placeholders`);
+    assert.deepEqual(names(value), names(english), `${ns}.${key} placeholders`);
     assert.equal(locale.bind(ns)(key), value, `${ns}.${key} is retrievable`);
   }
+  dispose();
+});
+test('version-specific messages interpolate old and new parameter names without raw placeholders', () => {
+  const locale = runtime();
+  const dispose = registerJapanese(locale, japaneseDictionaries(version)); locale.setLocale('ja');
+  const legacy = version.startsWith('0.2.0');
+  const message = locale.bind('pluginManager')('reasonIncompatibleVersion', { plugin: 'demo', runtime: version, [legacy ? 'peers' : 'requirements']: '0.2.x' });
+  assert.ok(message.includes('0.2.x')); assert.ok(!/\{\w+\}/.test(message));
+  const restart = locale.bind('pluginManager')('restartNotice', legacy ? undefined : { reason: '再起動が必要' });
+  assert.ok(!/\{\w+\}/.test(restart));
+  assert.deepEqual(japaneseDictionaries(), japaneseDictionaries('0.2.0-rc.2'), 'Host without release metadata uses legacy dictionaries');
   dispose();
 });

@@ -58,6 +58,8 @@ SOFTWARE.
 
 ## DeepSeek Harness (English audit baseline)
 
+Additional 0.2.1-rc.3 baseline source: https://github.com/deepseek-ai/deepseek-harness/tree/1f81c047fc48fa190a683e469daa699857e9afe8
+
 Source: https://github.com/deepseek-ai/deepseek-harness/tree/639ed015397290b3745d163aafe02ffee4aa3f84
 
 MIT License

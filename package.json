@@ -1,7 +1,7 @@
 {
   "name": "dsh-locale-ja-next",
-  "version": "0.1.1",
-  "description": "Offline Japanese language pack for DeepSeek Harness 0.2.0-rc.2 Web UI",
+  "version": "0.2.0",
+  "description": "Offline Japanese language pack for DeepSeek Harness 0.2.x Web UI",
   "type": "module",
   "license": "MIT",
   "repository": { "type": "git", "url": "git+https://github.com/heavyfox/dsh-locale-ja-next.git" },
@@ -16,19 +16,20 @@
     "./locale/*.json": "./locale/*.json",
     "./package.json": "./package.json"
   },
-  "files": ["lib", "locale", "cordis.patch.yml", "README.md", "REPORT.ja.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
-  "engines": { "node": "^22.19.0 || >=24.0.0", "dsh": "0.2.0-rc.2" },
+  "files": ["lib", "locale", "cordis.patch.yml", "README.md", "REPORT.ja.md", "REPORT-0.2.x.ja.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
+  "engines": { "node": "^22.19.0 || >=24.0.0", "dsh": ">=0.2.0-rc.2 <0.3.0-0" },
   "publishConfig": { "access": "public" },
   "keywords": ["dsh-plugin", "deepseek-harness", "japanese", "locale"],
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
     "client": { "platform": "web", "immediately": true, "inject": ["@deepseek-ai/dsh-client-locale"] }
   },
-  "peerDependencies": { "@deepseek-ai/dsh-client-locale": "0.2.0-rc.2" },
+  "peerDependencies": { "@deepseek-ai/dsh-client-locale": ">=0.2.0-rc.2 <0.3.0-0 || >=0.2.1-0 <0.3.0-0" },
   "peerDependenciesMeta": { "@deepseek-ai/dsh-client-locale": { "optional": true } },
   "devDependencies": {
-    "@deepseek-ai/dsh-client-locale": "0.2.0-rc.2",
-    "@deepseek-ai/cordis": "4.0.4",
+    "@deepseek-ai/dsh-client-locale": "0.2.1-rc.3",
+    "@deepseek-ai/cordis": "4.0.5",
+    "dsh-locale-020": "npm:@deepseek-ai/dsh-client-locale@0.2.0-rc.2",
     "@types/node": "24.13.4",
     "esbuild": "0.28.2",
     "typescript": "5.9.3",
@@ -38,6 +39,7 @@
     "build": "node scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
+    "test:legacy": "node scripts/test-legacy.mjs",
     "check-translations": "node scripts/check-translations.mjs",
     "extract-locales": "node scripts/extract-locales.mjs",
     "check-compatibility": "node scripts/check-compatibility.mjs",

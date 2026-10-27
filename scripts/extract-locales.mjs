@@ -41,7 +41,7 @@ export function extractLocales(installedRoot) {
 if (resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   if (!process.argv[2]) throw new Error('Usage: pnpm extract-locales <installed-dsh-root> [output.json]');
   const result = extractLocales(resolve(process.argv[2]));
-  const output = resolve(process.argv[3] ?? 'resources/en-0.2.0-rc.2.json');
+  const output = resolve(process.argv[3] ?? `resources/en-${result.version}.json`);
   writeFileSync(output, JSON.stringify(result, null, 2) + '\n');
   console.log(`Extracted ${Object.keys(result.dictionaries).length} namespaces / ${Object.values(result.dictionaries).reduce((n, d) => n + Object.keys(d).length, 0)} keys from ${result.version} into ${output}`);
 }

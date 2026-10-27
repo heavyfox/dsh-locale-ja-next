@@ -1,7 +1,7 @@
 {
-  "version": "0.2.0-rc.2",
-  "total": 2615,
-  "translated": 2611,
+  "version": "0.2.1-rc.3",
+  "total": 2910,
+  "translated": 2906,
   "missing": [
     "chat.message.stepProcess.sharedPrefix",
     "pluginManager.sentenceSeparator",

@@ -1,0 +1,28 @@
+{
+  "settings.agentPreset": {
+    "guideMinimalExplanation": "### 含まれるもの\n\n永続的なシェルツール1つと固定のシステムプロンプトです。この組み込みプリセットでは、スキル、計画、コンテキスト圧縮、標準の実行時コンテキストは読み込まれません。\n\n### 選ぶ場面\n\n実験や比較の基準として使用してください。シェルコマンドを通じてファイルの読み込みやスクリプト実行はできますが、長いタスクを管理する組み込み機能は少なくなります。ツールが少ないからといって、初心者に使いやすいとは限りません。",
+    "presetMinimalDescription": "状態を保持するシェルのみを備えた単一ツールのコーディングエージェントです。"
+  },
+  "conversation": {
+    "tool.preparing.content": "内容を準備中（{kilobytes}KB）"
+  },
+  "pluginManager": {
+    "restartNotice": "次回起動時に変更が反映されます",
+    "bundlesTitle": "インストール済み",
+    "installUpgradeNotice": "現在、インストール済みのプラグインは自動更新されません。更新するには、アンインストールして新しいバージョンをインストールしてください。今後のリリースで更新操作を改善する予定です。",
+    "installDoneRestart": "インストール済みです。次回起動時に読み込まれます。",
+    "reasonIncompatibleVersion": "{plugin}はDSH {runtime}と互換性がありません（必要な依存：{peers}）。実行するとクラッシュやデータ損失が発生する可能性があります。"
+  },
+  "schedule.manager": {
+    "detail.records": "配信記録"
+  },
+  "settings.models": {
+    "baseUrlDefault": "プロバイダーのデフォルト",
+    "deepSeekBaseUrl": "https://api.deepseek.com/anthropic"
+  },
+  "settings.webSearch": {
+    "baseUrl": "エンドポイント",
+    "baseUrlHint": "空欄にするとプロバイダーの既定値を使用します。",
+    "maxUsesHint": "1回のリクエストで回答するまでに検索できる回数。"
+  }
+}

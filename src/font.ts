@@ -10,7 +10,8 @@ export function installJapaneseFont(
   if (!doc) return () => {};
   const style = doc.createElement('style');
   style.dataset.dshLocaleJaFont = '';
-  style.textContent = `:root { --dsw-font-family: ${FONT_STACK} !important; }`;
+  // 0.2.1 derives body fonts from this default; explicit user text fonts stay first.
+  style.textContent = `:root { --dsw-font-family: ${FONT_STACK} !important; --dsh-font-family-text-default: ${FONT_STACK} !important; }`;
   const sync = (): void => {
     if (locale.getLocale().active.toLowerCase().split('-')[0] === 'ja') {
       if (!style.isConnected) doc.head.appendChild(style);

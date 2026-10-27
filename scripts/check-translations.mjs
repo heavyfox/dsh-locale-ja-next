@@ -1,7 +1,9 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { extractLocales } from './extract-locales.mjs';
-const baseline = process.argv[2] ? extractLocales(process.argv[2]) : JSON.parse(readFileSync('resources/en-0.2.0-rc.2.json', 'utf8'));
-const japanese = JSON.parse(readFileSync('src/translations/ja-JP.json', 'utf8'));
+import { japaneseDictionaries } from '../src/translations/index.ts';
+const baseline = process.argv[2] === '--baseline' ? JSON.parse(readFileSync(process.argv[3], 'utf8')) : process.argv[2] ? extractLocales(process.argv[2]) : JSON.parse(readFileSync('resources/en-0.2.1-rc.3.json', 'utf8'));
+const japanese = japaneseDictionaries(baseline.version);
+const known = readdirSync('resources').filter(name => /^en-.*\.json$/.test(name)).map(name => JSON.parse(readFileSync(`resources/${name}`, 'utf8')).dictionaries);
 const missing = [], stale = [], invalid = []; let count = 0;
 const placeholders = text => JSON.stringify([...text.matchAll(/\{(\w+)\}/g)].map(match => match[1]).sort());
 for (const [ns, dictionary] of Object.entries(baseline.dictionaries)) for (const [key, english] of Object.entries(dictionary)) {
@@ -10,7 +12,7 @@ for (const [ns, dictionary] of Object.entries(baseline.dictionaries)) for (const
   if (text === undefined) missing.push(`${ns}.${key}`);
   else if (typeof text !== 'string' || !text.trim() || placeholders(text) !== placeholders(english)) invalid.push(`${ns}.${key}`);
 }
-for (const [ns, dictionary] of Object.entries(japanese)) for (const key of Object.keys(dictionary)) if (baseline.dictionaries[ns]?.[key] === undefined) stale.push(`${ns}.${key}`);
+for (const [ns, dictionary] of Object.entries(japanese)) for (const key of Object.keys(dictionary)) if (!known.some(dicts => dicts[ns]?.[key] !== undefined) && baseline.dictionaries[ns]?.[key] === undefined) stale.push(`${ns}.${key}`);
 const report = { version: baseline.version, total: count, translated: count - missing.length - invalid.length, missing, stale, invalid };
 writeFileSync('resources/coverage.json', JSON.stringify(report, null, 2) + '\n');
 console.log(`DSH ${report.version}: ${report.translated}/${count} entries (${(100 * report.translated / count).toFixed(1)}%)`);
